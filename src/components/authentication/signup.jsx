@@ -1,89 +1,101 @@
-import React from 'react';
-import Logo from '../Logo';
+import React, { useState } from "react";
+import { FaMusic, FaGoogle, FaApple, FaFacebookF } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { userService } from "../../services/api";
 
-const SignUp = () => {
+const Signup = () => {
+  const [formData, setFormData] = useState({ username: "", email: "", password: "" });
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await userService.register(formData.username, formData.email, formData.password);
+      toast.success("Account created successfully! Please log in.");
+      navigate("/login");
+    } catch (error) {
+      setErrorMessage(error.message || "Signup failed");
+      toast.error(error.message || "Signup failed");
+    }
+  };
+
   return (
-    <div>
-      <section className="bg-white dark:bg-neutral-900">
-        <div className="container flex items-center justify-center min-h-screen px-6 mx-auto">
-          <form className="w-full max-w-md">
-            <div className="flex justify-center mx-auto">
-              <Logo />
-            </div>
-            
-            <div className="flex items-center justify-center mt-6">
-
-              <a href="#" className="w-1/3 pb-4 font-medium text-center text-gray-800 capitalize border-b-2 border-black dark:border-black dark:text-white">
-                sign up
-              </a>
-            </div>
-
-            <div className="relative flex items-center mt-8">
-              <span className="absolute">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              </span>
-
-              <input type="text" className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-neutral-900 dark:text-gray-300 dark:border-gray-600 focus:border-black dark:focus:border-black focus:ring-black focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Username" />
-            </div>
-
-            <label htmlFor="dropzone-file" className="flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer dark:border-gray-600 dark:bg-neutral-900">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-              </svg>
-
-              <h2 className="mx-3 text-gray-400">Profile Photo</h2>
-
-              <input id="dropzone-file" type="file" className="hidden" />
-            </label>
-
-            <div className="relative flex items-center mt-6">
-              <span className="absolute">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </span>
-
-              <input type="email" className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-neutral-900 dark:text-gray-300 dark:border-gray-600 focus:border-black dark:focus:border-black focus:ring-black focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Email address" />
-            </div>
-
-            <div className="relative flex items-center mt-4">
-              <span className="absolute">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-              </span>
-
-              <input type="password" className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-neutral-900 dark:text-gray-300 dark:border-gray-600 focus:border-black dark:focus:border-black focus:ring-black focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Password" />
-            </div>
-
-            <div className="relative flex items-center mt-4">
-              <span className="absolute">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-              </span>
-
-              <input type="password" className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-neutral-900 dark:text-gray-300 dark:border-gray-600 focus:border-black dark:focus:border-black focus:ring-black focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Confirm Password" />
-            </div>
-
-            <div className="mt-6">
-              <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-logo-color rounded-lg hover:bg-neutral-800 focus:outline-none focus:ring focus:ring-black focus:ring-opacity-50">
-                Sign Up
-              </button>
-
-              <div className="mt-6 text-center ">
-                <a href="/Login " className="text-sm text-black hover:underline dark:text-white">
-                  Already have an account?
-                </a>
-              </div>
-            </div>
-          </form>
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 bg-gray-800 p-8 rounded-xl shadow-2xl transform hover:scale-105 transition-transform duration-300">
+        <div className="text-center">
+          <FaMusic className="mx-auto h-12 w-auto text-yellow-400 animate-bounce" />
+          <h2 className="mt-6 text-3xl font-extrabold text-yellow-300">Join TuneUp Today</h2>
+          <p className="mt-2 text-sm text-gray-400">Create an account to start streaming</p>
         </div>
-      </section>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div>
+              <input
+                type="text"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 text-gray-300 rounded-t-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm bg-gray-700"
+                placeholder="Username"
+                value={formData.username}
+                onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                required
+              />
+            </div>
+            <div>
+              <input
+                type="email"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 text-gray-300 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm bg-gray-700"
+                placeholder="Email address"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                required
+              />
+            </div>
+            <div>
+              <input
+                type="password"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 text-gray-300 rounded-b-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm bg-gray-700"
+                placeholder="Password"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                required
+              />
+            </div>
+          </div>
+          {errorMessage && <div className="text-red-500 text-center mt-2">{errorMessage}</div>}
+          <div>
+            <button
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-gray-900 bg-yellow-400 hover:bg-yellow-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors duration-300"
+            >
+              Sign Up & Start Listening
+            </button>
+          </div>
+        </form>
+        <div className="mt-6">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-600"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-gray-800 text-gray-400">Or sign up with</span>
+            </div>
+          </div>
+          <div className="mt-6 grid grid-cols-3 gap-3">
+            <button className="w-full flex justify-center py-2 px-4 border border-gray-600 rounded-md bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors duration-300">
+              <FaGoogle className="h-5 w-5 text-yellow-400" />
+            </button>
+            <button className="w-full flex justify-center py-2 px-4 border border-gray-600 rounded-md bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors duration-300">
+              <FaApple className="h-5 w-5 text-yellow-400" />
+            </button>
+            <button className="w-full flex justify-center py-2 px-4 border border-gray-600 rounded-md bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors duration-300">
+              <FaFacebookF className="h-5 w-5 text-yellow-400" />
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default SignUp;
+export default Signup;

@@ -1,130 +1,114 @@
-// src/components/authentication/Login.jsx
-import React, { useState } from 'react';
-import axios from 'axios';
-import Logo from '../Logo';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { userService } from "../../services/api";
+import { FaMusic, FaGoogle, FaApple, FaFacebookF } from "react-icons/fa";
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent page reload
-
-    // Prepare the data to send
-    const data = {
-      username: username,
-      password: password,
-    };
-
+    e.preventDefault();
     try {
-      // Send POST request to backend (adjust the URL if necessary)
-      const response = await axios.post('http://localhost:8080/signin', data);
-
-      // Handle the response
-      console.log('Response from backend:', response.data);
-
-      // Reset the form or perform any other actions upon successful login
-      setUsername('');
-      setPassword('');
-      setErrorMessage('');
+      await userService.login(email, password);
+      toast.success("Welcome back!");
+      navigate("/app");
     } catch (error) {
-      // If there is an error (e.g., wrong credentials), handle it here
-      console.error('Error during login:', error);
-      setErrorMessage('Invalid username or password');
+      setErrorMessage(error.message || "Invalid email or password");
+      toast.error(error.message || "Login failed");
     }
   };
 
   return (
-    <div>
-      <section className="bg-white dark:bg-neutral-900">
-        <div className="container flex items-center justify-center min-h-screen px-6 mx-auto">
-          <form className="w-full max-w-md" onSubmit={handleSubmit}>
-            <div className="flex justify-center mx-auto">
-              <Logo />
-            </div>
-
-            <div className="flex items-center justify-center mt-6">
-              <a
-                href="#"
-                className="w-1/3 pb-4 font-medium text-center text-gray-500 capitalize border-b dark:border-gray-400 dark:text-gray-300"
-              >
-                Sign In
-              </a>
-            </div>
-
-            <div className="relative flex items-center mt-8">
-              <span className="absolute">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                  />
-                </svg>
-              </span>
-
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 bg-gray-800 p-8 rounded-xl shadow-2xl transform hover:scale-105 transition-transform duration-300">
+        <div className="text-center">
+          <FaMusic className="mx-auto h-12 w-auto text-yellow-400 animate-bounce" />
+          <h2 className="mt-6 text-3xl font-extrabold text-yellow-300">Welcome back to TuneUp</h2>
+          <p className="mt-2 text-sm text-gray-400">Let's get back to the rhythm</p>
+        </div>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div>
               <input
-                type="text"
-                className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-neutral-900 dark:text-gray-300 dark:border-gray-600 focus:border-black dark:focus:border-black focus:ring-black focus:outline-none focus:ring focus:ring-opacity-40"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                id="email-address"
+                name="email"
+                type="email"
+                autoComplete="email"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 text-gray-300 rounded-t-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm bg-gray-700"
+                placeholder="Email address"
               />
             </div>
-
-            <div className="relative flex items-center mt-4">
-              <span className="absolute">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                  />
-                </svg>
-              </span>
-
+            <div>
               <input
+                id="password"
+                name="password"
                 type="password"
-                className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-neutral-900 dark:text-gray-300 dark:border-gray-600 focus:border-black dark:focus:border-black focus:ring-black focus:outline-none focus:ring focus:ring-opacity-40"
-                placeholder="Password"
+                autoComplete="current-password"
+                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 text-gray-300 rounded-b-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm bg-gray-700"
+                placeholder="Password"
               />
             </div>
-
-            {/* Display error message */}
-            {errorMessage && (
-              <div className="text-red-500 text-center mt-2">{errorMessage}</div>
-            )}
-
-            <div className="mt-6">
-              <button
-                type="submit"
-                className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-logo-color rounded-lg hover:bg-neutral-800 focus:outline-none focus:ring focus:ring-black focus:ring-opacity-50"
-              >
-                Login
-              </button>
+          </div>
+          {errorMessage && <div className="text-red-500 text-center mt-2">{errorMessage}</div>}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <input
+                id="remember-me"
+                name="remember-me"
+                type="checkbox"
+                className="h-4 w-4 text-yellow-400 focus:ring-yellow-500 border-gray-600 rounded bg-gray-700"
+              />
+              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-400">
+                Remember me
+              </label>
             </div>
-          </form>
+            <div className="text-sm">
+              <a href="#" className="font-medium text-yellow-400 hover:text-yellow-300 transition-colors duration-300">
+                Forgot your password?
+              </a>
+            </div>
+          </div>
+          <div>
+            <button
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-gray-900 bg-yellow-400 hover:bg-yellow-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors duration-300"
+            >
+              Sign in and feel the beat
+            </button>
+          </div>
+        </form>
+        <div className="mt-6">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-600"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-gray-800 text-gray-400">Or continue with</span>
+            </div>
+          </div>
+          <div className="mt-6 grid grid-cols-3 gap-3">
+            <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors duration-300">
+              <FaGoogle className="h-5 w-5 text-yellow-400" />
+            </button>
+            <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors duration-300">
+              <FaApple className="h-5 w-5 text-yellow-400" />
+            </button>
+            <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors duration-300">
+              <FaFacebookF className="h-5 w-5 text-yellow-400" />
+            </button>
+          </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };
