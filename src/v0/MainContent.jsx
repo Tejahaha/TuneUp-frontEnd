@@ -127,4 +127,3 @@ function SongCard({ song, playSong, addToQueue }) {
     </div>
   )
 }
-

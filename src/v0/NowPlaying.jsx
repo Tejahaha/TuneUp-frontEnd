@@ -165,4 +165,3 @@ export default function NowPlaying({ currentSong, onNextSong, onPreviousSong }) 
     </div>
   )
 }
-

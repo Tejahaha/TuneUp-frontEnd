@@ -1,116 +1,154 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import { userService } from "../../services/api";
-import { FaMusic, FaGoogle, FaApple, FaFacebookF } from "react-icons/fa";
+"use client"
+
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import toast from "react-hot-toast"
+import { userService } from "../../services/api"
+import { FaGoogle, FaApple, FaFacebookF } from "react-icons/fa"
+import { motion } from "framer-motion"
+import "./Login.css"
+import { cn } from "../lib/utils"
+
+function ElegantShape({ className, delay = 0, width = 400, height = 100, rotate = 0, gradient = "from-white/[0.08]" }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -150, rotate: rotate - 15 }}
+      animate={{ opacity: 1, y: 0, rotate: rotate }}
+      transition={{ duration: 2.4, delay, ease: [0.23, 0.86, 0.39, 0.96], opacity: { duration: 1.2 } }}
+      className={cn("absolute", className)}
+    >
+      <motion.div
+        animate={{ y: [0, 15, 0] }}
+        transition={{ duration: 12, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+        style={{ width, height }}
+        className="relative"
+      >
+        <div
+          className={cn(
+            "absolute inset-0 rounded-full",
+            "bg-gradient-to-r to-transparent",
+            gradient,
+            "backdrop-blur-[2px] border-2 border-white/[0.15]",
+            "shadow-[0_8px_32px_0_rgba(255,255,255,0.1)]",
+            "after:absolute after:inset-0 after:rounded-full",
+            "after:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent_70%)]",
+          )}
+        />
+      </motion.div>
+    </motion.div>
+  )
+}
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate();
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      await userService.login(email, password);
-      toast.success("Welcome back!");
-      navigate("/app");
+      await userService.login(email, password)
+      toast.success("Welcome back!")
+      navigate("/app")
     } catch (error) {
-      setErrorMessage(error.message || "Invalid email or password");
-      toast.error(error.message || "Login failed");
+      setErrorMessage(error.message || "Invalid email or password")
+      toast.error(error.message || "Login failed")
     }
-  };
+  }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-gray-800 p-8 rounded-xl shadow-2xl transform hover:scale-105 transition-transform duration-300">
+    <div className="login-container relative min-h-screen w-full overflow-hidden bg-[#030303] text-white">
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" />
+      <div className="absolute inset-0 overflow-hidden">
+        <ElegantShape
+          delay={0.3}
+          width={600}
+          height={140}
+          rotate={12}
+          gradient="from-indigo-500/[0.15]"
+          className="left-[-10%] md:left-[-5%] top-[15%] md:top-[20%]"
+        />
+        <ElegantShape
+          delay={0.5}
+          width={500}
+          height={120}
+          rotate={-15}
+          gradient="from-rose-500/[0.15]"
+          className="right-[-5%] md:right-[0%] top-[70%] md:top-[75%]"
+        />
+        <ElegantShape
+          delay={0.4}
+          width={300}
+          height={80}
+          rotate={-8}
+          gradient="from-violet-500/[0.15]"
+          className="left-[5%] md:left-[10%] bottom-[5%] md:bottom-[10%]"
+        />
+      </div>
+      <div className="login-box relative z-10 bg-white/10 backdrop-blur-md rounded-lg p-8">
         <div className="text-center">
-          <FaMusic className="mx-auto h-12 w-auto text-yellow-400 animate-bounce" />
-          <h2 className="mt-6 text-3xl font-extrabold text-yellow-300">Welcome back to TuneUp</h2>
-          <p className="mt-2 text-sm text-gray-400">Let's get back to the rhythm</p>
+          <h2 className="login-title text-3xl font-bold mb-4">Welcome back to TuneUp</h2>
+          <p className="login-subtitle text-white/70 mb-6">Let's get back to the rhythm</p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 text-gray-300 rounded-t-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm bg-gray-700"
-                placeholder="Email address"
-              />
-            </div>
-            <div>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 text-gray-300 rounded-b-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm bg-gray-700"
-                placeholder="Password"
-              />
-            </div>
+        <form className="login-form" onSubmit={handleSubmit}>
+          <div className="input-group space-y-4">
+            <input
+              id="email-address"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="input-field w-full px-4 py-2 bg-white/20 rounded-md text-white placeholder-white/50"
+              placeholder="Email address"
+              required
+            />
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="input-field w-full px-4 py-2 bg-white/20 rounded-md text-white placeholder-white/50"
+              placeholder="Password"
+              required
+            />
           </div>
-          {errorMessage && <div className="text-red-500 text-center mt-2">{errorMessage}</div>}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                className="h-4 w-4 text-yellow-400 focus:ring-yellow-500 border-gray-600 rounded bg-gray-700"
-              />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-400">
-                Remember me
-              </label>
-            </div>
-            <div className="text-sm">
-              <a href="#" className="font-medium text-yellow-400 hover:text-yellow-300 transition-colors duration-300">
-                Forgot your password?
-              </a>
-            </div>
-          </div>
-          <div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-gray-900 bg-yellow-400 hover:bg-yellow-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors duration-300"
-            >
-              Sign in and feel the beat
-            </button>
-          </div>
+          {errorMessage && <div className="error-message text-red-500 mt-2">{errorMessage}</div>}
+          <motion.button
+            type="submit"
+            className="login-button w-full mt-6 bg-gradient-to-r from-indigo-500 to-rose-500 text-white font-semibold py-2 px-4 rounded-md"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Sign in and feel the beat
+          </motion.button>
         </form>
-        <div className="mt-6">
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-600"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-gray-800 text-gray-400">Or continue with</span>
-            </div>
-          </div>
-          <div className="mt-6 grid grid-cols-3 gap-3">
-            <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors duration-300">
-              <FaGoogle className="h-5 w-5 text-yellow-400" />
-            </button>
-            <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors duration-300">
-              <FaApple className="h-5 w-5 text-yellow-400" />
-            </button>
-            <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-colors duration-300">
-              <FaFacebookF className="h-5 w-5 text-yellow-400" />
-            </button>
-          </div>
+        <div className="social-login mt-6 flex justify-center space-x-4">
+          <motion.button
+            className="social-button google bg-white/20 p-2 rounded-full"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <FaGoogle />
+          </motion.button>
+          <motion.button
+            className="social-button apple bg-white/20 p-2 rounded-full"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <FaApple />
+          </motion.button>
+          <motion.button
+            className="social-button facebook bg-white/20 p-2 rounded-full"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <FaFacebookF />
+          </motion.button>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
+

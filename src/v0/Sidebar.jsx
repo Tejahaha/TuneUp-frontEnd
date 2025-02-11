@@ -34,4 +34,3 @@ function SidebarItem({ icon: Icon, text, isOpen }) {
     </li>
   )
 }
-

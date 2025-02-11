@@ -46,4 +46,3 @@ export default function Queue({ queue, playSong, removeFromQueue, moveInQueue })
     </div>
   )
 }
-

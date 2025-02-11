@@ -1,6 +1,6 @@
 import { Headphones, Mic2, Share2, Radio, Facebook, Twitter, Instagram, Youtube } from "lucide-react"
 import Logo from "../components/Logo"
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 
 const HarmonyLandingPage = () => {
   const scrollToSection = (sectionId) => {
@@ -11,49 +11,58 @@ const HarmonyLandingPage = () => {
   }
 
   return (
-    <div className="bg-gray-900 text-gray-100 min-h-screen">
+    <div className="bg-harmony-background text-harmony-text-primary min-h-screen">
       {/* Header */}
-
-<header className="sticky top-0 z-50 w-full border-b border-gray-800 bg-gray-900/95 backdrop-blur supports-[backdrop-filter]:bg-gray-900/75">
+      <header className="sticky top-0 z-50 w-full border-b border-harmony-surface bg-harmony-surface/95 backdrop-blur supports-[backdrop-filter]:bg-harmony-surface/75">
   <div className="container mx-auto flex h-14 items-center justify-between px-4">
-    <div className="w-32"><Logo/></div>
+    <div className="w-32">
+      <Logo />
+    </div>
     <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
       <button
         onClick={() => scrollToSection("features")}
-        className="text-yellow-300 hover:text-yellow-500 transition-colors"
+        className="text-harmony-primary hover:text-harmony-primary/80 transition-colors"
       >
         Features
       </button>
       <button
         onClick={() => scrollToSection("testimonials")}
-        className="text-yellow-300 hover:text-yellow-500 transition-colors"
+        className="text-harmony-primary hover:text-harmony-primary/80 transition-colors"
       >
         Testimonials
       </button>
     </nav>
     <div className="flex space-x-2">
+      {/* Login Button */}
       <Link to="/Login">
-        <button className="px-4 py-2 text-sm font-medium text-yellow-300 border border-yellow-300 rounded hover:bg-yellow-300 hover:text-gray-900 transition-colors">
-          Login
-        </button>
+      <button className="relative px-6 py-2 text-lg font-semibold text-harmony-primary border border-harmony-primary rounded-lg overflow-hidden bg-transparent transition-all duration-500 ease-in-out hover:text-white hover:shadow-[0_0_8px_rgba(255,255,255,0.8)] hover:before:absolute hover:before:inset-0 hover:before:bg-gradient-to-r hover:before:from-harmony-primary hover:before:via-harmony-secondary hover:before:to-harmony-accent hover:before:bg-[length:200%_200%] hover:before:animate-liquid hover:before:z-[-1]">
+        Login
+      </button>
       </Link>
+      {/* Sign Up Button */}
       <Link to="/SignUp">
-        <button className="px-4 py-2 text-sm font-medium bg-yellow-300 text-gray-900 rounded hover:bg-yellow-400 transition-colors">
-          Sign Up
-        </button>
-      </Link>
+      <button className="relative px-6 py-2 text-lg font-semibold text-harmony-primary border border-harmony-primary rounded-lg overflow-hidden bg-transparent transition-all duration-500 ease-in-out hover:text-white hover:shadow-[0_0_8px_rgba(255,255,255,0.8)] hover:before:absolute hover:before:inset-0 hover:before:bg-gradient-to-r hover:before:from-harmony-primary hover:before:via-harmony-secondary hover:before:to-harmony-accent hover:before:bg-[length:200%_200%] hover:before:animate-liquid hover:before:z-[-1]">
+        Sign Up
+      </button>
+</Link>
     </div>
   </div>
 </header>
+
+
+
+
+
+
 
       {/* Hero Section */}
       <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center space-y-4">
-            <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
+            <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl text-harmony-primary">
               Your Music, Your Way
             </h1>
-            <p className="mx-auto max-w-[600px] text-yellow-100 md:text-xl">
+            <p className="mx-auto max-w-[600px] text-harmony-text-secondary md:text-xl">
               Harmony brings your favorite tunes to life with advanced features and a sleek interface. Discover, play,
               and share music like never before.
             </p>
@@ -64,39 +73,39 @@ const HarmonyLandingPage = () => {
       {/* Features Section */}
       <section id="features" className="w-full py-12 md:py-24 lg:py-32">
         <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12 text-yellow-300">
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12 text-harmony-primary">
             Key Features
           </h2>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
             {[
               {
-                icon: <Headphones className="h-10 w-10 text-yellow-300" />,
+                icon: <Headphones className="h-10 w-10 text-harmony-primary" />,
                 title: "Smart Playlists",
                 description: "Create dynamic playlists that adapt to your listening habits.",
               },
               {
-                icon: <Mic2 className="h-10 w-10 text-yellow-300" />,
+                icon: <Mic2 className="h-10 w-10 text-harmony-primary" />,
                 title: "Lyrics Sync",
                 description: "Sing along with real-time synchronized lyrics.",
               },
               {
-                icon: <Share2 className="h-10 w-10 text-yellow-300" />,
+                icon: <Share2 className="h-10 w-10 text-harmony-primary" />,
                 title: "Social Sharing",
                 description: "Share your favorite tracks and playlists with friends.",
               },
               {
-                icon: <Radio className="h-10 w-10 text-yellow-300" />,
+                icon: <Radio className="h-10 w-10 text-harmony-primary" />,
                 title: "Offline Mode",
                 description: "Enjoy your music anywhere, even without an internet connection.",
               },
             ].map((feature, index) => (
               <div
                 key={index}
-                className="flex flex-col items-center space-y-2 border border-yellow-300/20 p-4 rounded-lg bg-gray-800"
+                className="flex flex-col items-center space-y-2 border border-harmony-primary/20 p-4 rounded-lg bg-harmony-surface"
               >
-                {feature.icon}
-                <h3 className="text-xl font-bold text-yellow-300">{feature.title}</h3>
-                <p className="text-yellow-100 text-center">{feature.description}</p>
+                <div className="p-2 rounded-full bg-gradient-accent">{feature.icon}</div>
+                <h3 className="text-xl font-bold text-harmony-primary">{feature.title}</h3>
+                <p className="text-harmony-text-secondary text-center">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -104,9 +113,9 @@ const HarmonyLandingPage = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="w-full py-12 md:py-24 lg:py-32 bg-gray-800">
+      <section id="testimonials" className="w-full py-12 md:py-24 lg:py-32 bg-harmony-surface">
         <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12 text-yellow-300">
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12 text-harmony-primary">
             What Our Users Say
           </h2>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
@@ -129,10 +138,10 @@ const HarmonyLandingPage = () => {
             ].map((testimonial, index) => (
               <div key={index} className="flex flex-col items-center space-y-4 text-center">
                 <div className="space-y-2">
-                  <p className="text-xl italic text-yellow-100">"{testimonial.quote}"</p>
+                  <p className="text-xl italic text-harmony-text-primary">"{testimonial.quote}"</p>
                   <div>
-                    <p className="font-semibold text-yellow-300">{testimonial.author}</p>
-                    <p className="text-sm text-yellow-100/80">{testimonial.title}</p>
+                    <p className="font-semibold text-harmony-primary">{testimonial.author}</p>
+                    <p className="text-sm text-harmony-text-secondary">{testimonial.title}</p>
                   </div>
                 </div>
               </div>
@@ -142,18 +151,18 @@ const HarmonyLandingPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-yellow-300">
+      <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-accent">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col items-center space-y-4 text-center">
             <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-gray-900">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-harmony-background">
                 Ready to Transform Your Music Experience?
               </h2>
-              <p className="mx-auto max-w-[700px] text-gray-700 md:text-xl">
+              <p className="mx-auto max-w-[700px] text-harmony-background/80 md:text-xl">
                 Join millions of music lovers and start your Harmony journey today. Your perfect soundtrack awaits!
               </p>
             </div>
-            <button className="px-8 py-3 text-lg font-semibold bg-gray-900 text-yellow-300 rounded-full hover:bg-gray-800 transition-colors">
+            <button className="px-8 py-3 text-lg font-semibold bg-harmony-background text-harmony-primary rounded-full hover:bg-harmony-surface transition-colors">
               Sign Up Now
             </button>
           </div>
@@ -161,44 +170,47 @@ const HarmonyLandingPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="w-full py-6 bg-gray-900">
+      <footer className="w-full py-6 bg-harmony-surface">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
             <div>
-              <h3 className="text-lg font-semibold mb-2 text-yellow-300">Product</h3>
+              <h3 className="text-lg font-semibold mb-2 text-harmony-primary">Product</h3>
               <ul className="space-y-2">
                 <li>
-                  <a href="#features" className="text-yellow-100 hover:text-yellow-300 transition-colors">
+                  <a
+                    href="#features"
+                    className="text-harmony-text-secondary hover:text-harmony-primary transition-colors"
+                  >
                     Features
                   </a>
                 </li>
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-2 text-yellow-300">Resources</h3>
+              <h3 className="text-lg font-semibold mb-2 text-harmony-primary">Resources</h3>
               <ul className="space-y-2">
                 <li>
-                  <a href="#" className="text-yellow-100 hover:text-yellow-300 transition-colors">
+                  <a href="#" className="text-harmony-text-secondary hover:text-harmony-primary transition-colors">
                     Blog
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-yellow-100 hover:text-yellow-300 transition-colors">
+                  <a href="#" className="text-harmony-text-secondary hover:text-harmony-primary transition-colors">
                     Support
                   </a>
                 </li>
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-2 text-yellow-300">Legal</h3>
+              <h3 className="text-lg font-semibold mb-2 text-harmony-primary">Legal</h3>
               <ul className="space-y-2">
                 <li>
-                  <a href="#" className="text-yellow-100 hover:text-yellow-300 transition-colors">
+                  <a href="#" className="text-harmony-text-secondary hover:text-harmony-primary transition-colors">
                     Privacy
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-yellow-100 hover:text-yellow-300 transition-colors">
+                  <a href="#" className="text-harmony-text-secondary hover:text-harmony-primary transition-colors">
                     Terms
                   </a>
                 </li>
@@ -206,7 +218,7 @@ const HarmonyLandingPage = () => {
             </div>
           </div>
           <div className="mt-8 flex justify-between items-center">
-            <p className="text-sm text-yellow-100/80">© 2023 TuneUp. All rights reserved.</p>
+            <p className="text-sm text-harmony-text-secondary">© 2023 TuneUp. All rights reserved.</p>
             <div className="flex space-x-4">
               {[
                 { icon: <Facebook className="h-6 w-6" />, label: "Facebook" },
@@ -218,7 +230,7 @@ const HarmonyLandingPage = () => {
                   key={index}
                   href="#"
                   aria-label={social.label}
-                  className="text-yellow-100/80 hover:text-yellow-300 transition-colors"
+                  className="text-harmony-text-secondary hover:text-harmony-primary transition-colors"
                 >
                   {social.icon}
                 </a>
