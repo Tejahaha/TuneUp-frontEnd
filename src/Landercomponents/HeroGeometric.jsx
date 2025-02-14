@@ -2,9 +2,8 @@
   import { cn } from "../components/lib/utils"
   import "./HeroGeometric.css"
   import { Headphones, Mic2, Share2, Radio, ArrowRight } from "lucide-react"
-  // import StickyHeader from "./StickyHeader"
   import { Link } from "react-router-dom";
-  
+  import StickyHeader from "./header/StickyHeader";
 
   function ElegantShape({ className, delay = 0, width = 400, height = 100, rotate = 0, gradient = "from-white/[0.08]" }) {
     return (
@@ -119,8 +118,9 @@
 
         </div>
 
+
         <div className="relative z-10">
-          {/* <StickyHeader /> */}
+          <StickyHeader/>
           {/* Hero Section */}
           <section className="min-h-screen flex items-center justify-center">
             <div className="container mx-auto px-4 md:px-6">

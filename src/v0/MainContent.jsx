@@ -1,129 +1,91 @@
-"use client"
+import { MoreHorizontal } from "lucide-react"
+import { cn } from "../components/lib/utils"
 
-import { useState } from "react"
-import { Plus } from "lucide-react"
+const PlaylistCard = ({ name, description, imageUrl, onClick }) => (
+  <div
+    className="bg-white/[0.03] rounded-lg p-4 hover:bg-white/[0.08] transition-colors cursor-pointer"
+    onClick={onClick}
+  >
+    <img
+      src={imageUrl || "/placeholder.svg"}
+      alt={name}
+      className="w-full aspect-square object-cover rounded-md mb-4"
+    />
+    <h3 className="text-white font-semibold mb-1">{name}</h3>
+    <p className="text-white/60 text-sm">{description}</p>
+  </div>
+)
 
-const mockSongs = [
-  [
-  {
-    "id": 1,
-    "title": "Bohemian Rhapsody",
-    "artist": "Queen",
-    "imageUrl": "https://i.scdn.co/image/ab67616d0000b273dd9b9fd2bd3c15ab76c0774e"
-  },
-  {
-    "id": 2,
-    "title": "Stairway to Heaven",
-    "artist": "Led Zeppelin",
-    "imageUrl": "https://i.scdn.co/image/ab67616d0000b2736a922a01d3fb1c53873b1f9d"
-  },
-  {
-    "id": 3,
-    "title": "Imagine",
-    "artist": "John Lennon",
-    "imageUrl": "https://i.scdn.co/image/ab67616d0000b27318550999e0fa01158e1b1368"
-  },
-  {
-    "id": 4,
-    "title": "Smells Like Teen Spirit",
-    "artist": "Nirvana",
-    "imageUrl": "https://i.scdn.co/image/ab67616d0000b273a9222db9b57a982272e13800"
-  },
-  {
-    "id": 5,
-    "title": "Billie Jean",
-    "artist": "Michael Jackson",
-    "imageUrl": "https://i.scdn.co/image/ab67616d0000b273b179915f0a5d3ccf21c8eb3f"
-  }
-]
-]
-
-export default function MainContent({ playSong, addToQueue, searchQuery }) {
-  const [playlists, setPlaylists] = useState([])
-  const [newPlaylistName, setNewPlaylistName] = useState("")
-
-  // Remove the filteredSongs method
-  // const filteredSongs = mockSongs.filter(song => song.title.toLowerCase().includes(searchQuery.toLowerCase()))
-
-  const createPlaylist = () => {
-    if (newPlaylistName.trim()) {
-      setPlaylists([...playlists, { name: newPlaylistName, songs: [] }])
-      setNewPlaylistName("")
-    }
-  }
+export default function MainContent({ sidebarOpen, audioPlayer }) {
+  const playlists = [
+    {
+      name: "Discover Weekly",
+      description: "Your weekly mixtape of fresh music",
+      imageUrl: "https://picsum.photos/200",
+      trackUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+    },
+    {
+      name: "Daily Mix 1",
+      description: "Personalized mix for you",
+      imageUrl: "https://picsum.photos/201",
+      trackUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+    },
+    {
+      name: "Chill Hits",
+      description: "Kick back to the best new and recent chill hits",
+      imageUrl: "https://picsum.photos/202",
+      trackUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+    },
+    {
+      name: "Release Radar",
+      description: "Catch all the latest music from artists you follow",
+      imageUrl: "https://picsum.photos/203",
+      trackUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+    },
+    {
+      name: "Your Top Songs 2023",
+      description: "The songs you loved most this year",
+      imageUrl: "https://picsum.photos/204",
+      trackUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+    },
+  ]
 
   return (
-    <div className="p-8">
-      <section className="mb-8">
-        <h2 className="text-2xl font-bold mb-4 text-yellow-300">Trending</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {mockSongs[0].map((song) => (
-            <SongCard key={song.id} song={song} playSong={playSong} addToQueue={addToQueue} />
-          ))}
-        </div>
-      </section>
-      <section className="mb-8">
-        <h2 className="text-2xl font-bold mb-4 text-yellow-300">All Time Hits</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {mockSongs[0].map((song) => (
-            <SongCard key={song.id} song={song} playSong={playSong} addToQueue={addToQueue} />
-          ))}
-        </div>
-      </section>
-      <section>
-        <h2 className="text-2xl font-bold mb-4 text-yellow-300">Your Playlists</h2>
-        <div className="flex items-center mb-4">
-          <input
-            type="text"
-            value={newPlaylistName}
-            onChange={(e) => setNewPlaylistName(e.target.value)}
-            placeholder="New playlist name"
-            className="bg-gray-700 text-white px-3 py-2 rounded-l-md focus:outline-none focus:ring-2 focus:ring-yellow-300"
-          />
-          <button
-            onClick={createPlaylist}
-            className="bg-yellow-300 text-gray-900 px-4 py-2 rounded-r-md hover:bg-yellow-200 transition-colors duration-200"
-          >
-            <Plus size={20} />
-          </button>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {playlists.map((playlist, index) => (
-            <div key={index} className="bg-gray-800 p-4 rounded-lg">
-              <h3 className="font-semibold text-white">{playlist.name}</h3>
-              <p className="text-gray-400">{playlist.songs.length} songs</p>
+    <div
+      className={cn(
+        "flex-1 overflow-hidden bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05]",
+        "transition-all duration-300 ease-in-out",
+      )}
+    >
+      <div className="h-full overflow-y-auto">
+        <header className="sticky top-0 bg-[#030303]/80 backdrop-blur-md z-10 p-6 flex justify-between items-center">
+          <div>
+            <h2 className="text-2xl font-bold text-white">Good afternoon</h2>
+          </div>
+          <div className="flex items-center gap-4">
+            <button className="text-white/60 hover:text-white transition-colors">
+              <MoreHorizontal size={24} />
+            </button>
+          </div>
+        </header>
+        <main className="p-6">
+          <section className="mb-8">
+            <h2 className="text-xl font-bold text-white mb-4">Your Playlists</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {playlists.map((playlist, index) => (
+                <PlaylistCard
+                  key={index}
+                  name={playlist.name}
+                  description={playlist.description}
+                  imageUrl={playlist.imageUrl}
+                  onClick={() => audioPlayer.loadTrack(playlist.trackUrl)}
+                />
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
-    </div>
-  )
-}
-
-function SongCard({ song, playSong, addToQueue }) {
-  return (
-    <div className="bg-gray-800 p-4 rounded-lg transition-transform duration-200 hover:scale-105">
-      <img
-        src={song.imageUrl || "/placeholder.svg"}
-        alt={song.title}
-        className="w-full aspect-square object-cover mb-2 rounded"
-      />
-      <h3 className="font-semibold text-white">{song.title}</h3>
-      <p className="text-gray-400">{song.artist}</p>
-      <div className="mt-2 flex justify-between">
-        <button
-          onClick={() => playSong(song)}
-          className="text-yellow-300 hover:text-yellow-200 transition-colors duration-200"
-        >
-          Play
-        </button>
-        <button
-          onClick={() => addToQueue(song)}
-          className="text-gray-400 hover:text-white transition-colors duration-200"
-        >
-          Add to Queue
-        </button>
+          </section>
+        </main>
       </div>
     </div>
   )
 }
+
