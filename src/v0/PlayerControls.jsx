@@ -1,6 +1,8 @@
 import { Play, Pause, SkipBack, SkipForward, Volume2, Repeat, Shuffle } from "lucide-react"
 
-export default function PlayerControls({ audioPlayer }) {
+import TiltedCard from "../blocks/Components/TiltedCard/TiltedCard"
+
+export default function PlayerControls({ audioPlayer, currentSongImage, currentSongName, currentSongArtist }) {
   const { isPlaying, duration, currentTime, volume, togglePlay, seek, setAudioVolume } = audioPlayer
 
   const formatTime = (time) => {
@@ -10,15 +12,30 @@ export default function PlayerControls({ audioPlayer }) {
   }
 
   return (
-    <div className="h-20 bg-[#030303] border-t border-white/[0.08] flex items-center px-4">
-      <div className="flex-1 flex items-center">
-        <img src="https://picsum.photos/56" alt="Now playing" className="w-14 h-14 rounded mr-4" />
-        <div>
-          <h4 className="text-white font-medium">Song Name</h4>
-          <p className="text-white/60 text-sm">Artist Name</p>
-        </div>
+    <div className="flex flex-col bg-[#030303] border-t border-white/[0.08] sticky bottom-0 z-10">
+      <div className="flex justify-center items-center p-4">
+        <TiltedCard
+          imageSrc={currentSongImage || "https://picsum.photos/250"}
+          altText={`${currentSongName || "Song Name"} album cover`}
+          captionText={`${currentSongName || "Song Name"} - ${currentSongArtist || "Artist Name"}`}
+          containerHeight="250px"
+          containerWidth="250px"
+          imageHeight="250px"
+          imageWidth="250px"
+          rotateAmplitude={12}
+          scaleOnHover={1.2}
+          showMobileWarning={false}
+          showTooltip={true}
+          displayOverlayContent={true}
+          overlayContent={
+            <p className="text-white text-lg font-medium">
+              {currentSongName || "Song Name"} - {currentSongArtist || "Artist Name"}
+            </p>
+          }
+        />
       </div>
-      <div className="flex-1 flex flex-col items-center">
+      <div className="h-20 flex flex-col items-center px-4">
+        <div className="flex-1 flex flex-col items-center">
         <div className="flex items-center gap-4 mb-2">
           <button className="text-white/60 hover:text-white transition-colors">
             <Shuffle size={20} />
@@ -64,6 +81,7 @@ export default function PlayerControls({ audioPlayer }) {
           className="w-24 h-1 bg-white/20 rounded-full appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white"
         />
       </div>
+    </div>
     </div>
   )
 }
