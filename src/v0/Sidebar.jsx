@@ -1,6 +1,7 @@
-import { Home, Search, Library, PlusSquare, Heart, ChevronLeft, ChevronRight } from "lucide-react"
+import { Home, Search, Library, PlusSquare, Heart, ChevronLeft, ChevronRight, Music } from "lucide-react"
 import { cn } from "../components/lib/utils"
 import Logo from "../components/Logo"
+import PlaylistManager from "./PlaylistManager"
 
 const SidebarItem = ({ icon: Icon, text, collapsed, onClick }) => (
   <button
@@ -15,7 +16,16 @@ const SidebarItem = ({ icon: Icon, text, collapsed, onClick }) => (
   </button>
 )
 
-export default function Sidebar({ isOpen, toggleSidebar }) {
+export default function Sidebar({ 
+  isOpen, 
+  toggleSidebar, 
+  audioPlayer, 
+  currentSong, 
+  onViewPlaylists,
+  isAddToPlaylistModalOpen, // Added prop
+  onOpenAddToPlaylistModal, // Added prop
+  onCloseAddToPlaylistModal // Added prop
+}) {
   return (
     <div
       className={cn(
@@ -37,8 +47,36 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
         </nav>
       </div>
       
-      <div className="mt-2 p-4 border-t border-zinc-800">
-        <div className="bg-zinc-800/50 rounded-md p-2">
+      <div className="mt-2 p-4 border-t border-zinc-800 flex-1 flex flex-col">
+        {/* Playlists section */}
+        <div className="mb-3">
+          <div className="flex items-center justify-between px-2 py-1">
+            <h3 className={cn("text-sm font-medium text-white/60", !isOpen && "sr-only")}>Playlists</h3>
+            {isOpen && (
+              <button 
+                onClick={onViewPlaylists}
+                className="text-white/60 hover:text-white transition-colors rounded-md hover:bg-zinc-800 p-1"
+              >
+                <Music size={16} />
+              </button>
+            )}
+          </div>
+        </div>
+        
+        {/* Playlist Manager */}
+        {isOpen && (
+          <div className="mb-4 bg-zinc-800/50 rounded-md p-2">
+            <PlaylistManager 
+              audioPlayer={audioPlayer} 
+              currentSong={currentSong} 
+              isAddToPlaylistModalOpen={isAddToPlaylistModalOpen} // Pass prop
+              onOpenAddToPlaylistModal={onOpenAddToPlaylistModal} // Pass prop
+              onCloseAddToPlaylistModal={onCloseAddToPlaylistModal} // Pass prop
+            />
+          </div>
+        )}
+        
+        <div className="bg-zinc-800/50 rounded-md p-2 mt-auto">
           <button className="flex items-center gap-2 text-white/60 hover:text-white transition-colors p-2 w-full rounded-md hover:bg-zinc-700">
             <Heart size={20} />
             {!isOpen ? null : <span>Liked Songs</span>}
