@@ -11,22 +11,31 @@ export default function AppLayout() {
   const [currentSong, setCurrentSong] = useState({ name: null, image: null })
 
   return (
-    <div className="min-h-screen w-full flex flex-col bg-[#030303]">
-      <div className="flex-1 flex overflow-hidden">
-        <Sidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />
-        <MainContent
-          sidebarOpen={isOpen}
-          audioPlayer={audioPlayer}
-          setCurrentSong={setCurrentSong}
-        />
-        <PlayerControls
-          audioPlayer={audioPlayer}
-          currentSongImage={currentSong.image}
-          currentSongName={currentSong.name}
-          currentSongArtist={""}
-        />
+    <div className="min-h-screen w-full flex flex-col bg-black">
+      {/* Main content area - takes full height minus player controls height */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Sidebar - fixed position */}
+        <div className="sticky top-0 h-screen">
+          <Sidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />
+        </div>
+        
+        {/* Main content - scrollable */}
+        <div className="flex-1 overflow-hidden">
+          <MainContent
+            sidebarOpen={isOpen}
+            audioPlayer={audioPlayer}
+            setCurrentSong={setCurrentSong}
+          />
+        </div>
       </div>
+      
+      {/* Player controls - fixed at bottom */}
+      <PlayerControls
+        audioPlayer={audioPlayer}
+        currentSongImage={currentSong.image}
+        currentSongName={currentSong.name}
+        currentSongArtist={""}
+      />
     </div>
   )
 }
-

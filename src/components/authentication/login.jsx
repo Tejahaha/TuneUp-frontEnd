@@ -6,6 +6,7 @@ import { FaEye, FaEyeSlash, FaGoogle, FaApple, FaFacebookF } from "react-icons/f
 import { motion } from "framer-motion";
 import { cn } from "../../components/lib/utils";
 import "./Login.css";
+import { useAuth } from "./AuthContext";
 
 const ElegantShape = ({ className, delay = 0, width = 400, height = 100, rotate = 0, gradient = "from-white/[0.08]" }) => {
   return (
@@ -44,6 +45,7 @@ function Login() {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -61,16 +63,18 @@ function Login() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      const data = await res.text();
-      if (res.ok && data.toLowerCase().indexOf("invalid") === -1) {
-        localStorage.setItem("jwtToken", data);
-        setSuccess("Login successful! Redirecting to profile...");
-        setTimeout(() => navigate("/app"), 1500);
+      const data = await res.json();
+      if (res.ok && data.token) {
+        // Assuming backend returns { token, user, expiresIn }
+        login(data.user, data.token, data.expiresIn || 3600);
+        setSuccess("Login successful!");
+        navigate("/app");
       } else {
-        setError(data || "Login failed");
+        setError(data.message || "Login failed");
       }
     } catch (err) {
-      setError("Network error");
+      setError("An error occurred. Please try again.");
+      console.log('Error:', err); // Log the error to the console
     } finally {
       setLoading(false);
     }

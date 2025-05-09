@@ -1,6 +1,18 @@
-import { useEffect, useState } from "react"
-import { MoreHorizontal } from "lucide-react"
-import { cn } from "../components/lib/utils"
+import { useEffect, useState } from "react";
+import { MoreVertical, Home } from "lucide-react";
+import { cn } from "../components/lib/utils";
+
+const scrollbarHideStyle = `
+  * {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
+  *::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    background: transparent !important;
+  }
+`;
 
 const songImageMap = {
   "All Most Padipoyinde Pilla.mp3": "/songs/All Most Padipoyinde Pilla.jpg.jpg",
@@ -39,125 +51,100 @@ const songImageMap = {
   "Suguna Sundari.mp3": "/songs/Suguna Sundari.jpg.jpg",
   "Wild Saala.mp3": "/songs/Wild Saala.jpg.jpg",
   "Yevarini Yevaritho.mp3": "/songs/Yevarini Yevaritho.jpg.jpg"
-}
+};
 
-const SongCard = ({ name, image, onClick }) => (
-  <div
-    className="bg-white/[0.03] rounded-lg p-4 hover:bg-white/[0.08] transition-colors cursor-pointer flex flex-col items-center gap-3"
-    onClick={onClick}
-  >
-    <img
-      src={image || "/placeholder.svg"}
-      alt={name}
-      className="w-24 h-24 object-cover rounded-md"
-    />
-    <span className="text-white font-semibold truncate mt-2">{name}</span>
-  </div>
-)
+export default function MainContent({ 
+  sidebarOpen, 
+  audioPlayer, 
+  setCurrentSong 
+}) {
+  const [songs, setSongs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [menuOpenIdx, setMenuOpenIdx] = useState(null);
 
-export default function MainContent({ sidebarOpen, audioPlayer, setCurrentSong }) {
-  const [songs, setSongs] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
+  useEffect(() => {
+    const styleElement = document.createElement('style');
+    styleElement.innerHTML = scrollbarHideStyle;
+    document.head.appendChild(styleElement);
+    return () => {
+      document.head.removeChild(styleElement);
+    };
+  }, []);
 
   useEffect(() => {
     async function fetchSongs() {
       try {
-        // Hardcoded list since direct file system access is not possible from frontend
-        setSongs([
-          "All Most Padipoyinde Pilla.mp3",
-          "Bholaa Mania.mp3",
-          "Boss Party.mp3",
-          "Chamkeela Angeelesi.mp3",
-          "Dhoom Dhaam Dhosthaan.mp3",
-          "Endhe Endhe.mp3",
-          "Guntur Kaaram.mp3",
-          "Hathavidi.mp3",
-          "I Phone.mp3",
-          "Jai Balayya.mp3",
-          "Jai Shriram.mp3",
-          "Kalallo.mp3",
-          "Maa Bava Manobhavalu.mp3",
-          "Malli Malli.mp3",
-          "Mawa Bro.mp3",
-          "Monalisa Monalisa.mp3",
-          "Monna Badilo.mp3",
-          "Na Roja Nuvve.mp3",
-          "Nachavule Nachavule.mp3",
-          "Neekemo Andamekkuva.mp3",
-          "No No No.mp3",
-          "O Dollar Pillagaa.mp3",
-          "Oh Ammalaalo Ammalaalo.mp3",
-          "Ori Vaari.mp3",
-          "Poonakaalu Loading.mp3",
-          "Priya Mithunam.mp3",
-          "Ragile Jwaale.mp3",
-          "Ram Sita Ram.mp3",
-          "Rama Krishna.mp3",
-          "Ranjithame.mp3",
-          "Shivoham.mp3",
-          "Silk Bar.mp3",
-          "Sridevi Chiranjeevi.mp3",
-          "Suguna Sundari.mp3",
-          "Wild Saala.mp3",
-          "Yevarini Yevaritho.mp3"
-        ])
-        setLoading(false)
+        setSongs(Object.keys(songImageMap));
+        setLoading(false);
       } catch (err) {
-        setError("Failed to load songs.")
-        setLoading(false)
+        setError("Failed to load songs.");
+        setLoading(false);
       }
     }
-    fetchSongs()
-  }, [])
+    fetchSongs();
+  }, []);
 
   const handlePlaySong = (song) => {
-    const url = `/songs/${encodeURIComponent(song)}`
-    audioPlayer.loadTrack(url)
-    audioPlayer.togglePlay()
+    const url = `/songs/${encodeURIComponent(song)}`;
+    audioPlayer.loadTrack(url);
+    audioPlayer.togglePlay();
     setCurrentSong({
       name: song.replace(/\.mp3$/, ""),
       image: songImageMap[song] || "/placeholder.svg"
-    })
-  }
+    });
+  };
+
+  const handleSongMenu = (e, idx) => {
+    e.stopPropagation();
+    setMenuOpenIdx(menuOpenIdx === idx ? null : idx);
+  };
 
   return (
-    <div
-      className={cn(
-        "flex-1 overflow-hidden bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-indigo-500/[0.05]",
-        "transition-all duration-300 ease-in-out",
-      )}
-    >
-      <div className="h-full overflow-y-auto">
-        <header className="sticky top-0 bg-[#030303]/80 backdrop-blur-md z-10 p-6 flex justify-between items-center">
-          <div>
-            <h2 className="text-2xl font-bold text-white">Songs</h2>
-          </div>
-          <div className="flex items-center gap-4">
-            <button className="text-white/60 hover:text-white transition-colors">
-              <MoreHorizontal size={24} />
-            </button>
-          </div>
-        </header>
-        <main className="p-6">
-          {loading && <div className="text-white">Loading songs...</div>}
-          {error && <div className="text-red-400">{error}</div>}
-          <section className="mb-8">
-            <h2 className="text-xl font-bold text-white mb-4">Available Songs</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {songs.map((song, idx) => (
-                <SongCard
-                  key={idx}
-                  name={song.replace(/\.mp3$/, "")}
-                  image={songImageMap[song]}
-                  onClick={() => handlePlaySong(song)}
+    <div className="h-screen overflow-y-auto flex flex-col bg-gradient-to-br from-black-900/30 via-black to-black-900/30">
+      <header className="sticky top-0 bg-zinc-900/90 backdrop-blur-md z-10 p-6 flex justify-between items-center border-b border-zinc-800">
+        <div className="flex items-center gap-4">
+          <h2 className="text-2xl font-bold text-white">Songs</h2>
+        </div>
+        <div className="flex items-center gap-4">
+          <button className="text-white/60 hover:text-white transition-colors">
+            <MoreVertical size={24} />
+          </button>
+        </div>
+      </header>
+
+      <main className="p-6 flex-1 overflow-y-auto pb-24">
+        {loading && <div className="text-white">Loading songs...</div>}
+        {error && <div className="text-red-400">{error}</div>}
+
+        <section className="mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8">
+            {songs.map((song, idx) => (
+              <div
+                key={idx}
+                className="flex flex-col items-center gap-2 cursor-pointer group relative"
+                onClick={() => handlePlaySong(song)}
+                onMouseLeave={() => setMenuOpenIdx(null)}
+              >
+                <img
+                  src={songImageMap[song] || "/placeholder.svg"}
+                  alt={song.replace(/\.mp3$/, "")}
+                  className="w-40 h-40 object-cover rounded-lg shadow-lg transition-transform duration-200 hover:scale-105 bg-zinc-900 p-2 group-hover:ring-2 group-hover:ring-indigo-500"
                 />
+                <span className="mt-2 text-center text-white text-base font-medium truncate w-36" title={song.replace(/\.mp3$/, "")}>{song.replace(/\.mp3$/, "")}</span>
+                <span className="absolute top-4 right-4 z-10">
+                  <button
+                    className="opacity-0 group-hover:opacity-100 text-white/80 hover:text-indigo-400 transition-colors rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    onClick={(e) => handleSongMenu(e, idx)}
+                  >
+                    <MoreVertical size={22} />
+                  </button>
+                  </span>
+                </div>
               ))}
             </div>
           </section>
         </main>
       </div>
-    </div>
-  )
+  );
 }
-

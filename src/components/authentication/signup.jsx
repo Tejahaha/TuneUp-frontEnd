@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { cn } from "../../components/lib/utils";
 import "./Signup.css";
+import { useAuth } from "./AuthContext";
 
 const ElegantShape = ({ className, delay = 0, width = 400, height = 100, rotate = 0, gradient = "from-white/[0.08]" }) => {
   return (
@@ -44,6 +45,7 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -58,15 +60,19 @@ const SignUp = () => {
       email,
       password
     };
-
     try {
-      const response = await axios.post("http://localhost:8080/user/signup", userData);
-      console.log("Registration successful:", response.data);
-      toast.success("User registered successfully.");
-      navigate("/login", { replace: true });
-    } catch (error) {
-      console.error("Registration failed:", error.response?.data || error.message);
-      toast.error(error.response?.data || "Registration Failed");
+      const res = await axios.post("http://localhost:8080/user/signup", userData);
+      const data = res.data;
+      if (res.status === 200 && data.token) {
+        // Assuming backend returns { token, user, expiresIn }
+        login(data.user, data.token, data.expiresIn || 3600);
+        navigate("/app");
+      } else {
+        toast.error(data.message || "Signup failed");
+      }
+    } catch (err) {
+      toast.error("An error occurred. Please try again.");
+      console.log('Error:', err); // Log the error to the console
     } finally {
       setLoading(false);
     }
