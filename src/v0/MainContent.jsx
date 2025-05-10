@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { MoreVertical, Home, PlusSquare } from "lucide-react"; // Added PlusSquare
+import { cn } from "../components/lib/utils";
 import PlaylistView from './PlaylistView'; // Added import
 
 const scrollbarHideStyle = `
@@ -166,7 +167,7 @@ export default function MainContent({
 
   return (
     <div className="h-screen overflow-y-auto flex flex-col bg-gradient-to-br from-black-900/30 via-black to-black-900/30">
-      <header className="sticky top-0 bg-zinc-900/90 backdrop-blur-md p-6 flex justify-between items-center border-b border-zinc-800">
+      <header className="sticky top-0 bg-zinc-900/90 backdrop-blur-md z-10 p-6 flex justify-between items-center border-b border-zinc-800">
         <div className="flex items-center gap-4">
           <h2 className="text-2xl font-bold text-white">Songs</h2>
         </div>
@@ -196,7 +197,7 @@ export default function MainContent({
                   className="w-40 h-40 object-cover rounded-lg shadow-lg transition-transform duration-200 hover:scale-105 bg-zinc-900 p-2 group-hover:ring-2 group-hover:ring-indigo-500"
                 />
                 <span className="mt-2 text-center text-white text-base font-medium truncate w-36" title={song.replace(/\.mp3$/, "")}>{song.replace(/\.mp3$/, "")}</span>
-                <span className="absolute top-4 right-4 relative"> {/* Removed z-10 */}
+                <span className="absolute top-4 right-4 z-10 relative"> {/* Added relative positioning for the dropdown menu */}
                   <button
                     className="opacity-0 group-hover:opacity-100 text-white/80 hover:text-indigo-400 transition-colors rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     onClick={(e) => handleSongMenu(e, idx)}
@@ -204,7 +205,7 @@ export default function MainContent({
                     <MoreVertical size={22} />
                   </button>
                   {menuOpenIdx === idx && (
-                    <div className="absolute top-full mt-1 right-0 bg-zinc-800 shadow-lg rounded-md p-1 w-48 border border-zinc-700"> {/* Removed z-20 */}
+                    <div className="absolute top-full mt-1 right-0 bg-zinc-800 shadow-lg rounded-md p-1 z-20 w-48 border border-zinc-700">
                       <div className="px-3 py-2 text-xs text-indigo-400 font-semibold border-b border-zinc-700 mb-1">
                         Artist: {songArtistMap[song] || "Unknown"}
                       </div>

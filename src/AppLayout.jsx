@@ -1,14 +1,15 @@
-import Sidebar from "./v0/Sidebar"
-import MainContent from "./v0/MainContent"
-import PlayerControls from "./v0/PlayerControls"
-import { useAudioPlayer } from "./hooks/useAudioPlayer"
-import { useSidebar } from "./hooks/useSidebar"
-import { useState, useCallback } from "react" // Added useCallback
+import Sidebar from "./v0/Sidebar";
+import MainContent from "./v0/MainContent";
+import PlayerControls from "./v0/PlayerControls";
+import AddToPlaylistModal from "./v0/AddToPlaylistModal"; // ⬅️ Import the new modal
+import { useAudioPlayer } from "./hooks/useAudioPlayer";
+import { useSidebar } from "./hooks/useSidebar";
+import { useState, useCallback } from "react";
 
 export default function AppLayout() {
-  const audioPlayer = useAudioPlayer()
-  const { isOpen, toggleSidebar } = useSidebar()
-  const [currentSong, setCurrentSong] = useState({ name: null, image: null })
+  const audioPlayer = useAudioPlayer();
+  const { isOpen, toggleSidebar } = useSidebar();
+  const [currentSong, setCurrentSong] = useState({ name: null, image: null });
   const [isAddToPlaylistModalOpen, setIsAddToPlaylistModalOpen] = useState(false);
 
   const handleOpenAddToPlaylistModal = useCallback(() => {
@@ -20,7 +21,7 @@ export default function AppLayout() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full flex flex-col bg-black">
+    <div className="min-h-screen w-full flex flex-col bg-black relative">
       {/* Main content area - takes full height minus player controls height */}
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar - fixed position */}
@@ -28,25 +29,25 @@ export default function AppLayout() {
           <Sidebar 
             isOpen={isOpen} 
             toggleSidebar={toggleSidebar} 
-            audioPlayer={audioPlayer} // Pass audioPlayer
-            currentSong={currentSong} // Pass currentSong
-            isAddToPlaylistModalOpen={isAddToPlaylistModalOpen} // Pass modal state
-            onOpenAddToPlaylistModal={handleOpenAddToPlaylistModal} // Pass open handler
-            onCloseAddToPlaylistModal={handleCloseAddToPlaylistModal} // Pass close handler
+            audioPlayer={audioPlayer}
+            currentSong={currentSong}
+            isAddToPlaylistModalOpen={isAddToPlaylistModalOpen}
+            onOpenAddToPlaylistModal={handleOpenAddToPlaylistModal}
+            onCloseAddToPlaylistModal={handleCloseAddToPlaylistModal}
           />
         </div>
-        
+
         {/* Main content - scrollable */}
         <div className="flex-1 overflow-hidden">
           <MainContent
             sidebarOpen={isOpen}
             audioPlayer={audioPlayer}
             setCurrentSong={setCurrentSong}
-            onOpenPlaylistManagerModal={handleOpenAddToPlaylistModal} // Pass the handler to MainContent
+            onOpenPlaylistManagerModal={handleOpenAddToPlaylistModal}
           />
         </div>
       </div>
-      
+
       {/* Player controls - fixed at bottom */}
       <PlayerControls
         audioPlayer={audioPlayer}
@@ -54,6 +55,13 @@ export default function AppLayout() {
         currentSongName={currentSong.name}
         currentSongArtist={""}
       />
+
+      {/* Global Add to Playlist Modal - rendered on top of all content */}
+      <AddToPlaylistModal
+        currentSong={currentSong}
+        isOpen={isAddToPlaylistModalOpen}
+        onClose={handleCloseAddToPlaylistModal}
+      />
     </div>
-  )
+  );
 }

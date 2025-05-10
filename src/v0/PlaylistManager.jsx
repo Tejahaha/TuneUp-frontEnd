@@ -4,17 +4,18 @@ import { Plus, Music, X, Check, Loader2 } from "lucide-react";
 export default function PlaylistManager({ 
   audioPlayer, 
   currentSong,
-  isAddToPlaylistModalOpen,
-  onOpenAddToPlaylistModal,
-  onCloseAddToPlaylistModal
+  isAddToPlaylistModalOpen, // New prop
+  onOpenAddToPlaylistModal, // New prop
+  onCloseAddToPlaylistModal // New prop
 }) {
   const [playlists, setPlaylists] = useState([]);
   const [newPlaylistName, setNewPlaylistName] = useState("");
-  const [userId, setUserId] = useState(1);
+  const [userId, setUserId] = useState(1); // Default user ID, in a real app would come from auth
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  // Fetch user playlists on component mount
   useEffect(() => {
     fetchUserPlaylists();
   }, []);
@@ -88,7 +89,7 @@ export default function PlaylistManager({
       });
 
       if (!response.ok) throw new Error("Failed to add song to playlist");
-      await fetchUserPlaylists();
+      await fetchUserPlaylists(); // Refresh playlists
       setSuccess(`Added "${currentSong.name}" to "${playlistName}"`);
       setError("");
       setTimeout(() => setSuccess(""), 3000);
@@ -102,8 +103,9 @@ export default function PlaylistManager({
 
   return (
     <div>
+      {/* Button to open playlists section */}
       <button 
-        onClick={onOpenAddToPlaylistModal}
+        onClick={onOpenAddToPlaylistModal} // Use prop to open modal
         disabled={!currentSong || !currentSong.name}
         className="flex items-center gap-2 text-white/60 hover:text-white transition-colors p-2 w-full rounded-md hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed"
         title={!currentSong || !currentSong.name ? "Select a song first" : "Add current song to playlist"}
@@ -112,6 +114,7 @@ export default function PlaylistManager({
         <span>Add to Playlist</span>
       </button>
 
+      {/* Inline Create Playlist Form */}
       <div className="mt-4 mb-2 bg-zinc-900/80 rounded-md p-3 border border-zinc-800">
         <form onSubmit={handleCreatePlaylist} className="flex flex-col gap-2">
           <label htmlFor="playlistName" className="text-white/70 text-sm font-medium mb-1">Create New Playlist</label>
@@ -140,6 +143,7 @@ export default function PlaylistManager({
         )}
       </div>
 
+      {/* Playlist List */}
       <div className="mb-4 max-h-60 overflow-y-auto">
         {loading ? (
           <div className="flex justify-center py-4">
@@ -167,9 +171,10 @@ export default function PlaylistManager({
         )}
       </div>
 
+      {/* Add to Playlist Modal */}
       {isAddToPlaylistModalOpen && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[10050] backdrop-blur-sm">
-          <div className="bg-zinc-900 p-6 rounded-lg w-96 shadow-2xl border border-zinc-700">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[9999] backdrop-blur-sm">
+          <div className="bg-zinc-900 p-6 rounded-lg w-96 shadow-2xl border border-zinc-700 transform transition-all duration-300 ease-out scale-100 opacity-100">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-xl font-bold text-white">Add to Playlist</h3>
               <button onClick={onCloseAddToPlaylistModal} className="text-white/60 hover:text-white">
@@ -226,6 +231,7 @@ export default function PlaylistManager({
         </div>
       )}
 
+      {/* Success message */}
       {success && (
         <div className="fixed bottom-20 right-4 bg-green-900/80 text-white p-3 rounded-md shadow-lg z-50 flex items-center gap-2 max-w-xs">
           <Check size={16} className="text-green-400" />
