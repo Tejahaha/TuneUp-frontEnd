@@ -42,6 +42,7 @@ const SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("USER");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -58,7 +59,8 @@ const SignUp = () => {
     const userData = {
       username,
       email,
-      password
+      password,
+      role
     };
     try {
       const res = await axios.post("http://localhost:8080/user/signup", userData);
@@ -192,6 +194,23 @@ const SignUp = () => {
                     placeholder="Password"
                     required
                   />
+                </motion.div>
+                <motion.div 
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6, duration: 0.6 }}
+                  className="relative"
+                >
+                  <select
+                    id="role"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                    className="w-full px-4 py-3 bg-white/10 rounded-lg text-white placeholder-white/50 border border-white/10 focus:border-white/20 transition-colors"
+                    required
+                  >
+                    <option value="USER">User</option>
+                    <option value="ADMIN">Admin</option>
+                  </select>
                   <button
                     type="button"
                     onClick={togglePasswordVisibility}

@@ -4,7 +4,8 @@ import { Home, Search, Library, Heart, ChevronLeft, ChevronRight, Music, Headpho
 import { cn } from "../components/lib/utils"
 import Logo from "../components/Logo"
 import PlaylistManager from "./PlaylistManager"
-import { useState } from "react"
+import AdminPanel from "./AdminPanel"
+import { useState, useEffect } from "react"
 
 const SidebarItem = ({ icon: Icon, text, collapsed, onClick, active = false }) => (
   <button
@@ -37,7 +38,21 @@ const Sidebar = ({
   onCloseAddToPlaylistModal,
   onViewPlaylists,
 }) => {
+  const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [activeItem, setActiveItem] = useState("home")
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        setIsAdmin(payload.role === 'ADMIN');
+      } catch (e) {
+        console.error('Error decoding token:', e);
+      }
+    }
+  }, []);
 
   return (
     <div
@@ -87,6 +102,18 @@ const Sidebar = ({
               active={activeItem === "library"}
               onClick={() => setActiveItem("library")}
             />
+            {isAdmin && (
+              <SidebarItem
+                icon={Settings}
+                text="Admin Panel"
+                collapsed={!isOpen}
+                active={activeItem === "admin"}
+                onClick={() => {
+                  setActiveItem("admin");
+                  setShowAdminPanel(true);
+                }}
+              />
+            )}
             <SidebarItem
               icon={Headphones}
               text="Now Playing"
@@ -114,7 +141,25 @@ const Sidebar = ({
             </div>
           </div>
 
-          {isOpen && (
+          {isOpen && showAdminPanel ? (
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm">
+              <div 
+                className="bg-gradient-to-br from-zinc-900 to-zinc-950 p-6 rounded-2xl w-96 shadow-2xl border border-white/10 z-[10000] animate-in fade-in zoom-in-95 duration-300"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <AdminPanel />
+                <button 
+                  onClick={() => {
+                    setShowAdminPanel(false);
+                    setActiveItem("library");
+                  }}
+                  className="mt-4 w-full px-4 py-2 bg-white/5 hover:bg-white/10 text-white rounded-lg transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          ) : isOpen && (
             <PlaylistManager
               audioPlayer={audioPlayer}
               currentSong={currentSong}

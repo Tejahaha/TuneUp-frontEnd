@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react"
 import { MoreVertical, PlusSquare, Play, Heart, Clock, Download } from "lucide-react"
 import PlaylistView from "./PlaylistView"
-
+import Chatbot from "./Chatbot"  // Import the Chatbot component
+import './bhAAi.css'
 const scrollbarHideStyle = `
   * {
     -ms-overflow-style: none !important;
@@ -94,6 +95,45 @@ const songArtistMap = {
   "Yevarini Yevaritho.mp3": "Sid Sriram",
 }
 
+const songMovieMap = {
+  "All Most Padipoyinde Pilla.mp3": "Samajavaragamana",
+  "Bholaa Mania.mp3": "Bholaa",
+  "Boss Party.mp3": "Waltair Veerayya",
+  "Chamkeela Angeelesi.mp3": "Aadikeshava",
+  "Dhoom Dhaam Dhosthaan.mp3": "Baby",
+  "Endhe Endhe.mp3": "Uppena",
+  "Guntur Kaaram.mp3": "Guntur Kaaram",
+  "Hathavidi.mp3": "Aadikeshava",
+  "I Phone.mp3": "Extra",
+  "Jai Balayya.mp3": "Veera Simha Reddy",
+  "Jai Shriram.mp3": "Adipurush",
+  "Kalallo.mp3": "Love Story",
+  "Maa Bava Manobhavalu.mp3": "MAD (Mass Adda Dhana)",
+  "Malli Malli.mp3": "Hi Nanna",
+  "Mawa Bro.mp3": "Dhamaka",
+  "Monalisa Monalisa.mp3": "Sarkaru Vaari Paata",
+  "Monna Badilo.mp3": "Tuck Jagadish",
+  "Na Roja Nuvve.mp3": "Kushi",
+  "Nachavule Nachavule.mp3": "Sridevi Soda Center",
+  "Neekemo Andamekkuva.mp3": "Bheemla Nayak",
+  "No No No.mp3": "Pushpa: The Rise",
+  "O Dollar Pillagaa.mp3": "Karthikeya 2",
+  "Oh Ammalaalo Ammalaalo.mp3": "The Raja Saab",
+  "Ori Vaari.mp3": "Dasara",
+  "Poonakaalu Loading.mp3": "Pushpa: The Rise",
+  "Priya Mithunam.mp3": "Mr. Majnu",
+  "Ragile Jwaale.mp3": "Theenmar",
+  "Ram Sita Ram.mp3": "RRR",
+  "Rama Krishna.mp3": "Satya Dev 24CV",
+  "Ranjithame.mp3": "Varisu",
+  "Shivoham.mp3": "Adipurush",
+  "Silk Bar.mp3": "Odela 2",
+  "Sridevi Chiranjeevi.mp3": "Gang Leader",
+  "Suguna Sundari.mp3": "Gentleman",
+  "Wild Saala.mp3": "Pushpa: The Rise",
+  "Yevarini Yevaritho.mp3": "DJ Tillu"
+}
+
 export default function MainContent({
   sidebarOpen,
   audioPlayer,
@@ -107,6 +147,8 @@ export default function MainContent({
   const [error, setError] = useState("")
   const [menuOpenIdx, setMenuOpenIdx] = useState(null)
   const [hoveredSong, setHoveredSong] = useState(null)
+  const [searchQuery, setSearchQuery] = useState("") // Search query state
+  const [searchFilter, setSearchFilter] = useState("all") // Search filter state: all, song, artist, movie
 
   useEffect(() => {
     const styleElement = document.createElement("style")
@@ -129,6 +171,36 @@ export default function MainContent({
     }
     fetchSongs()
   }, [])
+
+  // Filter songs based on search query and search filter
+  const filteredSongs = searchQuery
+    ? songs.filter((song) => {
+        const songName = song.toLowerCase().replace(/\.mp3$/, "")
+        const artist = (songArtistMap[song] || "").toLowerCase()
+        const movie = (songMovieMap[song] || "").toLowerCase()
+        const query = searchQuery.toLowerCase()
+        
+        if (searchFilter === "all") {
+          return songName.includes(query) || artist.includes(query) || movie.includes(query)
+        } else if (searchFilter === "movie") {
+          return movie.includes(query)
+        } else if (searchFilter === "artist") {
+          return artist.includes(query)
+        } else { // song
+          return songName.includes(query)
+        }
+      })
+    : songs
+
+  // Update search query state on input change
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value)
+  }
+
+  // Update search filter state
+  const handleSearchFilterChange = (e) => {
+    setSearchFilter(e.target.value)
+  }
 
   const handlePlaySong = (song) => {
     const url = `/songs/${encodeURIComponent(song)}`
@@ -164,6 +236,7 @@ export default function MainContent({
         onBack={onSwitchToSongsView}
         songImageMap={songImageMap}
         songArtistMap={songArtistMap}
+        songMovieMap={songMovieMap}
       />
     )
   }
@@ -176,12 +249,25 @@ export default function MainContent({
             Discover Music
           </h2>
           <div className="flex items-center gap-4">
-            <div className="relative">
+            <div className="relative flex items-center">
               <input
                 type="text"
-                placeholder="Search songs..."
+                placeholder="Search songs, artists, movies..."
+                value={searchQuery}
+                onChange={handleSearchChange}
                 className="bg-white/5 border border-white/10 rounded-full px-5 py-2 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-purple-500/50 w-64 backdrop-blur-sm"
               />
+            <select 
+              value={searchFilter}
+              onChange={handleSearchFilterChange}
+              className="ml-2 bg-gradient-to-br from-purple-800/50 to-black border border-white/10 text-white text-sm rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all backdrop-blur-sm hover:bg-purple-700/50"
+            >
+              <option value="all">All</option>
+              <option value="song">Songs</option>
+              <option value="artist">Artists</option>
+              <option value="movie">Movies</option>
+            </select>
+
             </div>
           </div>
         </div>
@@ -209,7 +295,7 @@ export default function MainContent({
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-            {songs.slice(0, 6).map((song, idx) => (
+            {filteredSongs.slice(0, 6).map((song, idx) => (
               <div
                 key={idx}
                 className="group relative"
@@ -243,6 +329,7 @@ export default function MainContent({
                 <div className="mt-3 space-y-1">
                   <h4 className="font-medium text-white truncate">{song.replace(/\.mp3$/, "")}</h4>
                   <p className="text-sm text-white/60 truncate">{songArtistMap[song] || "Unknown Artist"}</p>
+                  <p className="text-xs text-white/40 truncate">From: {songMovieMap[song] || "Unknown Movie"}</p>
                 </div>
 
                 <button
@@ -283,28 +370,30 @@ export default function MainContent({
                 <option>Recently Added</option>
                 <option>Alphabetical</option>
                 <option>Artist</option>
+                <option>Movie</option>
               </select>
             </div>
           </div>
 
           <div className="bg-white/5 backdrop-blur-md rounded-xl border border-white/10 overflow-hidden">
             <div className="grid grid-cols-12 px-4 py-3 border-b border-white/10 text-white/60 text-sm font-medium">
-              <div className="col-span-6 flex items-center"># Title</div>
+              <div className="col-span-5 flex items-center"># Title</div>
               <div className="col-span-3">Artist</div>
-              <div className="col-span-2 flex items-center justify-center">
+              <div className="col-span-2">Movie</div>
+              <div className="col-span-1 flex items-center justify-center">
                 <Clock size={16} />
               </div>
               <div className="col-span-1"></div>
             </div>
 
             <div className="divide-y divide-white/5">
-              {songs.map((song, idx) => (
+              {filteredSongs.map((song, idx) => (
                 <div
                   key={idx}
                   className="grid grid-cols-12 px-4 py-3 hover:bg-white/5 transition-colors cursor-pointer group"
                   onClick={() => handlePlaySong(song)}
                 >
-                  <div className="col-span-6 flex items-center gap-3">
+                  <div className="col-span-5 flex items-center gap-3">
                     <div className="w-10 h-10 relative rounded-md overflow-hidden flex-shrink-0">
                       <img
                         src={songImageMap[song] || "/placeholder.svg"}
@@ -322,7 +411,10 @@ export default function MainContent({
                   <div className="col-span-3 flex items-center text-white/70">
                     {songArtistMap[song] || "Unknown Artist"}
                   </div>
-                  <div className="col-span-2 flex items-center justify-center text-white/70 text-sm">3:45</div>
+                  <div className="col-span-2 flex items-center text-white/70">
+                    {songMovieMap[song] || "Unknown Movie"}
+                  </div>
+                  <div className="col-span-1 flex items-center justify-center text-white/70 text-sm">3:45</div>
                   <div className="col-span-1 flex items-center justify-end">
                     <button
                       className="text-white/40 hover:text-white p-2 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -340,6 +432,11 @@ export default function MainContent({
           </div>
         </section>
       </main>
+      
+      {/* MoodTunes Chatbot integration */}
+      <div className="chatbot-container">
+        <Chatbot />
+      </div>
     </div>
   )
 }

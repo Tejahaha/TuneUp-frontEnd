@@ -2,6 +2,7 @@
 
 import { Play, Pause, SkipBack, SkipForward, Volume2, Repeat, Shuffle, Heart, MoreHorizontal } from "lucide-react"
 import { useState } from "react"
+import Chatbot from './Chatbot';
 
 export default function PlayerControls({ audioPlayer, currentSongImage, currentSongName, currentSongArtist }) {
   const { isPlaying, duration, currentTime, volume, togglePlay, seek, setAudioVolume } = audioPlayer
@@ -123,13 +124,6 @@ export default function PlayerControls({ audioPlayer, currentSongImage, currentS
         {/* Volume control */}
         <div className="w-1/4 flex items-center justify-end">
           <div className="relative">
-            <button
-              className="text-white/60 hover:text-white p-2 rounded-full transition-colors"
-              onClick={() => setShowVolumeSlider(!showVolumeSlider)}
-              onMouseEnter={() => setShowVolumeSlider(true)}
-            >
-              <Volume2 size={18} />
-            </button>
 
             {showVolumeSlider && (
               <div
@@ -153,6 +147,7 @@ export default function PlayerControls({ audioPlayer, currentSongImage, currentS
             <MoreHorizontal size={18} />
           </button>
         </div>
+        <Chatbot />
       </div>
     </div>
   )

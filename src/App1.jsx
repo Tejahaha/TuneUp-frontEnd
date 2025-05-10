@@ -8,6 +8,7 @@ import AppLayout from "./AppLayout";
 import HeroGeometric from "./Landercomponents/HeroGeometric";
 import { AuthProvider } from "./components/authentication/AuthContext";
 import ProtectedRoute from "./components/authentication/ProtectedRoute";
+import AdminPanel from "./v0/AdminPanel";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
             {/* <Route path="/" element={<HarmonyLandingPage />} /> */}
             <Route path="/" element={<HeroGeometric />} />
             <Route path="/app" element={<ProtectedRoute><AppLayout /></ProtectedRoute>} />
+            <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
           </Routes>
         </Router>
       </AuthProvider>
