@@ -27,7 +27,7 @@ export default function PlaylistManager({
   const fetchUserPlaylists = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`${process.env.BASE_API_URL || import.meta.env.VITE_BASE_API_URL}/api/playlists/user/${userId}`)
+      const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/api/playlists/user/${userId}`)
       if (!response.ok) throw new Error("Failed to fetch playlists")
       const data = await response.json()
       setPlaylists(data)
@@ -52,7 +52,7 @@ export default function PlaylistManager({
 
     try {
       setLoading(true)
-      const response = await fetch(`${process.env.BASE_API_URL || import.meta.env.VITE_BASE_API_URL}/api/playlists/create`, {
+      const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/api/playlists/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,7 +91,7 @@ export default function PlaylistManager({
 
     try {
       setLoading(true)
-      const response = await fetch(`${process.env.BASE_API_URL || import.meta.env.VITE_BASE_API_URL}/api/playlists/addSong`, {
+      const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/api/playlists/addSong`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

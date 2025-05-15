@@ -63,7 +63,7 @@ const SignUp = () => {
       role
     };
     try {
-      const BaseURL = process.env.BASE_API_URL || import.meta.env.VITE_BASE_API_URL;
+      const BaseURL = import.meta.env.VITE_BASE_API_URL;
       const res = await axios.post(`${BaseURL}/user/signup`, userData);
       const data = res.data;
       if (res.status === 200 && data.token) {
