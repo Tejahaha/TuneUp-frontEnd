@@ -56,7 +56,7 @@ const Sidebar = ({
 
   return (
     <div
-      style={{ height: "100vh", overflowY: "auto" }}
+      style={{ height: "85vh", overflowY: "auto" }}
       className="scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent"
     >
       <div
