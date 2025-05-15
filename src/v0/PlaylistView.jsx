@@ -20,7 +20,7 @@ export default function PlaylistView({ userId = 1, audioPlayer, setCurrentSong, 
   const fetchUserPlaylists = async () => {
     try {
       setLoading(true)
-      const response = await fetch("http://localhost:8080/api/playlists/user/" + userId)
+      const response = await fetch(`${process.env.BASE_API_URL || import.meta.env.VITE_BASE_API_URL}/api/playlists/user/${userId}`)
       if (!response.ok) throw new Error("Failed to fetch playlists")
       const data = await response.json()
       setPlaylists(data)
@@ -35,7 +35,7 @@ export default function PlaylistView({ userId = 1, audioPlayer, setCurrentSong, 
     try {
       setLoading(true)
       const response = await fetch(
-        `http://localhost:8080/api/playlists/get?userId=${userId}&playlistName=${encodeURIComponent(playlistName)}`,
+        `${process.env.BASE_API_URL || import.meta.env.VITE_BASE_API_URL}/api/playlists/get?userId=${userId}&playlistName=${encodeURIComponent(playlistName)}`,
       )
       if (!response.ok) throw new Error("Failed to fetch playlist details")
 

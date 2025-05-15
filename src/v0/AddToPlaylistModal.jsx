@@ -20,7 +20,7 @@ export default function AddToPlaylistModal({ currentSong, isOpen, onClose }) {
   const fetchUserPlaylists = async () => {
     try {
       setLoading(true)
-      const res = await fetch(`http://localhost:8080/api/playlists/user/${userId}`)
+      const res = await fetch(`${process.env.BASE_API_URL || import.meta.env.VITE_BASE_API_URL}/api/playlists/user/${userId}`)
       if (!res.ok) throw new Error("Failed to fetch playlists")
       const data = await res.json()
       setPlaylists(data)
@@ -39,7 +39,7 @@ export default function AddToPlaylistModal({ currentSong, isOpen, onClose }) {
 
     try {
       setLoading(true)
-      const res = await fetch("http://localhost:8080/api/playlists/addSong", {
+      const res = await fetch(`${process.env.BASE_API_URL || import.meta.env.VITE_BASE_API_URL}/api/playlists/addSong`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -69,7 +69,7 @@ export default function AddToPlaylistModal({ currentSong, isOpen, onClose }) {
 
     try {
       setLoading(true)
-      const response = await fetch("http://localhost:8080/api/playlists/create", {
+      const response = await fetch(`${process.env.BASE_API_URL || import.meta.env.VITE_BASE_API_URL}/api/playlists/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

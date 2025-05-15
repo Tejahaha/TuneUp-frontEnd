@@ -46,7 +46,7 @@ export default function AdminPanel() {
       formData.append("mp3File", mp3File);
       formData.append("albumImage", albumImage);
 
-      const response = await fetch("http://localhost:8080/api/songs/upload", {
+      const response = await fetch(`${process.env.BASE_API_URL || import.meta.env.VITE_BASE_API_URL}/api/songs/upload`, {
         method: "POST",
         body: formData,
       });

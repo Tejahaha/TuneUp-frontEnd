@@ -51,7 +51,7 @@ function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const BaseURL = "http://localhost:8080";
+  const BaseURL = process.env.BASE_API_URL || import.meta.env.VITE_BASE_API_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
