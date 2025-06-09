@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/Tejahaha/TuneUp-frontEnd/blob/main/src/tuneup.png" alt="TuneUp Logo" height="120"/><br>
+  <img src="https://github.com/Tejahaha/TuneUp-frontEnd/blob/main/src/tuneup.png" alt="TuneUp Logo" height="240"/><br>
   <span style="font-size:2.4rem;font-family:Montserrat,Segoe UI,Helvetica Neue,Arial,sans-serif;font-weight:800;background:linear-gradient(90deg,#a78bfa 10%,#f472b6 90%);color:transparent;-webkit-background-clip:text;background-clip:text;display:inline-block;letter-spacing:2px;">
     TuneUp Frontend
   </span>
