@@ -1,9 +1,11 @@
 <p align="center">
   <img src="https://user-images.githubusercontent.com/925708253/233780194-e9d3673e-6a6d-4eab-8b3c-0dfeaa7a0f6f.png" alt="TuneUp Logo" height="120"/><br>
-  <b style="font-size:2.3rem;font-family:Montserrat,Segoe UI,Helvetica Neue,Arial,sans-serif;">TuneUp Frontend</b>
+  <span style="font-size:2.4rem;font-family:Montserrat,Segoe UI,Helvetica Neue,Arial,sans-serif;font-weight:800;background:linear-gradient(90deg,#a78bfa 10%,#f472b6 90%);color:transparent;-webkit-background-clip:text;background-clip:text;display:inline-block;letter-spacing:2px;">
+    TuneUp Frontend
+  </span>
 </p>
 
-<p align="center">
+<p align="center" style="font-family:Montserrat;font-size:1.3rem;">
   <em>Curated luxury for your music journey.<br>
   Discover, groove, and curate — with a touch of royalty.</em>
 </p>
@@ -18,7 +20,8 @@
 
 ## What is TuneUp?
 
-**TuneUp** is a next-generation, AI-powered music platform that lets you discover, collect, and enjoy music in style. More than a player—it's your personal DJ, playlist artisan, and music lounge, all in one.
+**TuneUp** is a next-generation, AI-powered music platform that lets you discover, collect, and enjoy music in style.  
+More than a player—it's your personal DJ, playlist artisan, and music lounge, all in one.
 
 ---
 
@@ -110,8 +113,23 @@ Have an idea for a feature? Found a bug?
 
 ---
 
+<p align="center" style="font-size:1.15rem;">
+  <b style="background:linear-gradient(90deg,#a78bfa,#f472b6);color:transparent;-webkit-background-clip:text;background-clip:text;font-size:1.2em;font-family:Montserrat,Segoe UI,Helvetica Neue,Arial,sans-serif;padding:0 0.35em;">
+    Made with passion by
+  </b>
+  <br>
+  <a href="https://github.com/Tejahaha" style="background:linear-gradient(90deg,#f472b6,#a78bfa);color:transparent;-webkit-background-clip:text;background-clip:text;font-size:1.4em;font-weight:700;font-family:Montserrat,Segoe UI,Helvetica Neue,Arial,sans-serif;text-decoration:none;margin:0 0.2em;display:inline-block;">
+    Tejahaha
+  </a>
+  <span style="font-size:1.2em;font-weight:800;color:#a1a1aa;vertical-align:middle;">&</span>
+  <a href="https://github.com/ushaswi-nandigam" style="background:linear-gradient(90deg,#a78bfa,#f472b6);color:transparent;-webkit-background-clip:text;background-clip:text;font-size:1.4em;font-weight:700;font-family:Montserrat,Segoe UI,Helvetica Neue,Arial,sans-serif;text-decoration:none;margin:0 0.2em;display:inline-block;">
+    Ushaswi Nandigam
+  </a>
+  <br>
+  <span style="color:#a1a1aa;font-size:1.08rem;">and contributors.</span>
+</p>
+
 <p align="center" style="font-size:1.1rem;color:#a78bfa;">
   <em>“Music gives a soul to the universe, wings to the mind, flight to the imagination and life to everything.”<br>
   — Plato</em>
 </p>
-<p align="center" style="color:#a1a1aa;">Made with passion by <a href="https://github.com/Tejahaha" style="color:#a78bfa;font-weight:600;text-decoration:none;">Tejahaha</a> & contributors.</p>
